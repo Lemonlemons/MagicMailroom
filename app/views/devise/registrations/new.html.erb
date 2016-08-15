@@ -1,0 +1,38 @@
+<%= content_for :body_id, "signup" %>
+  <%= render "/shared/alerts" %>
+	<div class="bg clear">
+
+		<a href="<%= root_url %>" class="logo">
+			<h1>Magic Mailroom</h1>
+		</a>
+
+		<h3>Create Your Account Now</h3>
+
+		<div class="content">
+			<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+				<div class="fields">
+					<strong>Your information</strong>
+					<%= f.text_field :firstname, autofocus: true, class: "form-control", placeholder: "Your first name" %>
+          <%= f.text_field :lastname, autofocus: true, class: "form-control", placeholder: "Your last name" %>
+				</div>
+				<div class="fields">
+					<strong>Your login data</strong>
+					<%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "Your email" %>
+					<%= f.password_field :password, autocomplete: "off", class:"form-control", placeholder: "Password" %>
+					<%= f.password_field :password_confirmation, autocomplete: "off", class:"form-control", placeholder: "Confirm password" %>
+				</div>
+				<div class="signup">
+          <%= f.submit "Create my account", class: "btn btn-success btn-lg" %>
+				</div>
+			<% end %>
+		</div>
+
+		<div class="bottom-wrapper">
+			<div class="message">
+				<span>Already have an account?</span>
+				<%= link_to "Sign in here", new_session_path(resource_name) %>.<br>
+        <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>
+			</div>
+		</div>
+	</div>

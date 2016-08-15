@@ -1,0 +1,56 @@
+<div id="sidebar-flat-dark" class="main-sidebar fix-scroll">
+  <div class="current-user">
+      <a href="#" class="name">
+        <%= image_tag "blank-profile-picture.png", class: "avatar" %>
+        <span>
+          <%= current_user.firstname + " " + current_user.lastname %>
+          <i class="fa fa-chevron-down"></i>
+        </span>
+      </a>
+      <ul class="menu">
+        <li>
+          <%= link_to "Account settings", edit_user_registration_path %>
+        </li>
+        <li>
+          <%= link_to "My Company", edit_user_registration_path %>
+        </li>
+        <li>
+          <%= link_to 'Logout', destroy_user_session_path, :method => :delete %>
+        </li>
+      </ul>
+  </div>
+  <div class="menu-section">
+    <h3>My Mailroom</h3>
+    <ul>
+      <li class="option">
+        <a href="<%= root_url %>" class="active">
+          <i class="ion-android-earth"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="option">
+        <a href="<%= residents_path %>">
+          <i class="ion-person-stalker"></i> <span>Residents</span>
+        </a>
+      </li>
+      <li class="option">
+        <a href="<%= deliveries_path %>">
+          <i class="ion-email"></i> <span>Deliveries</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <% if current_user.company_id != nil %>
+    <div class="menu-section">
+      <h3>My Company</h3>
+      <ul>
+        <li class="option">
+          <a href="<%= root_url %>" class="active">
+            <i class="ion-home"></i>
+            <span><%= current_company.name %></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</div>

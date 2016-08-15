@@ -1,0 +1,17 @@
+<%= form_for(@resident) do |f| %>
+  <% if @resident.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resident.errors.count, "error") %> prohibited this resident from being saved:</h2>
+
+      <ul>
+      <% @resident.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
