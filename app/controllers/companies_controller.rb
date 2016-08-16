@@ -1,6 +1,6 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_user!
-  before_action :detect_no_company
+  before_action :detect_no_company, except: [:new, :create]
   before_action :set_company, only: [:show, :edit, :update, :destroy]
 
   # GET /companies
@@ -24,9 +24,15 @@ class CompaniesController < ApplicationController
   # POST /companies
   def create
     @company = Company.new(company_params)
+    @company.company_code = SecureRandom.uuid
 
     if @company.save
-      redirect_to @company, notice: 'Company was successfully created.'
+      current_user.company_id = @company.id
+      if current_user.save
+        redirect_to root_path, notice: 'Company was successfully created.'
+      else
+        puts "error"
+      end
     else
       render :new
     end
@@ -55,12 +61,14 @@ class CompaniesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.fetch(:company, {})
+      params.fetch(:company, {}).permit(:name)
     end
 
   	def detect_no_company
       if current_user != nil && current_user.company_id == nil
         redirect_to "/users/edit"
+      elsif current_user != nil && current_user.company_id != nil
+        @current_company = Company.find(current_user.company_id)
       end
   	end
 end

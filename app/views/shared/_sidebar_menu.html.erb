@@ -1,6 +1,6 @@
 <div id="sidebar-flat-dark" class="main-sidebar fix-scroll">
   <div class="current-user">
-      <a href="#" class="name">
+      <a href="" class="name">
         <%= image_tag "blank-profile-picture.png", class: "avatar" %>
         <span>
           <%= current_user.firstname + " " + current_user.lastname %>
@@ -45,9 +45,9 @@
       <h3>My Company</h3>
       <ul>
         <li class="option">
-          <a href="<%= root_url %>" class="active">
+          <a href="<%= edit_company_path(@current_company) %>" class="active">
             <i class="ion-home"></i>
-            <span><%= current_company.name %></span>
+            <span><%= @current_company.name %></span>
           </a>
         </li>
       </ul>

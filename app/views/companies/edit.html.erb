@@ -1,6 +1,11 @@
 <h1>Editing Company</h1>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Company Code</label>
+    <div class="col-sm-10 col-md-8">
+      <p class="cushion"><%= @company.company_code %></p>
+    </div>
+  </div>
+</div>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @company %> |
-<%= link_to 'Back', companies_path %>

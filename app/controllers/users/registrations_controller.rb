@@ -11,7 +11,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:company_code] != nil
       @company = Company.find_by(company_code: params[:company_code])
       if @company != nil
-        puts @company
         resource.company_id = @company.id
       end
     end

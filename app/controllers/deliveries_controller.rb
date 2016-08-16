@@ -77,6 +77,8 @@ class DeliveriesController < ApplicationController
     def detect_no_company
       if current_user != nil && current_user.company_id == nil
         redirect_to "/users/edit"
+      elsif current_user != nil && current_user.company_id != nil
+        @current_company = Company.find(current_user.company_id)
       end
   	end
 end
