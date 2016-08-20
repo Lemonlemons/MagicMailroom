@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   acts_as_paranoid
-  belongs_to :company
+  belongs_to :company, :counter_cache => true
   has_many :deliveries
 
   validates :firstname, :lastname, :email, :encrypted_password, presence: true

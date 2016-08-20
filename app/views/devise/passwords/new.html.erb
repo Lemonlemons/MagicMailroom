@@ -1,16 +1,33 @@
-<h2>Forgot your password?</h2>
+<%= content_for :body_id, "signin" %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+<%= render "/shared/alerts" %>
+<div class="bg clear">
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+	<div class="logo">
+		<h1>Magic Mailroom</h1>
+	</div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+	<h3>Forgot your password?</h3>
 
-<%= render "devise/shared/links" %>
+	<div class="content">
+		<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
+			<div class="fields">
+				<strong><%= f.label :email, "Email address" %></strong>
+				<%= f.email_field :email, placeholder: "Your email", autofocus: true, class: "form-control" %>
+			</div>
+			<div class="actions">
+				<%= f.submit "Send me reset password insructions", class: 'btn btn-primary btn-lg' %>
+			</div>
+		<% end %>
+	</div>
+
+	<div class="bottom-wrapper">
+		<div class="message">
+			<span>Don't have an account?</span>
+			<%= link_to "Sign up here", new_registration_path(resource_name) %>.<br>
+      <%= link_to "Log in", new_session_path(resource_name) %><br>
+      <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>
+    </div>
+	</div>
+</div>

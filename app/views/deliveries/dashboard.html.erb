@@ -1,0 +1,114 @@
+<h1>Your Dashboard</h1>
+
+<%= content_for :body_id, "dashboard" %>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <h3>Notify residents of new deliveries</h3>
+    <%= render 'form' %>
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <div class="chart">
+      <h3>
+        Deliveries over the last two weeks
+
+        <div class="total pull-right hidden-xs">
+          <%= @total_deliveries %> total
+        </div>
+      </h3>
+      <div id="two-weeks-deliveries-chart"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <div class="referrals">
+      <h3>Top Notifiers</h3>
+      <% @users.each do |u| %>
+        <div class="referral">
+          <span>
+            <%= u.firstname %>
+            <div class="pull-right">
+              <span class="data"><%= u.deliveries_count %></span>  <%= ((u.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%
+            </div>
+          </span>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= u.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((u.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%">
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <div class="referrals">
+      <h3>Most deliveried-to residents</h3>
+      <% @residents.each do |r| %>
+        <div class="referral">
+          <span>
+            <%= r.name %>
+            <div class="pull-right">
+              <span class="data"><%= r.deliveries_count %></span>  <%= ((r.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%
+            </div>
+          </span>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= r.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((r.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%">
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="barchart">
+      <h3>Deliveries last month</h3>
+      <div id="one-month-deliveries-chart"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="metrics clearfix">
+      <div class="metric">
+        <span class="field">Total users in your company</span>
+        <span class="data"><%= @total_users %></span>
+      </div>
+      <div class="metric">
+        <span class="field">Total Residents</span>
+        <span class="data"><%= @total_residents %></span>
+      </div>
+      <div class="metric">
+        <span class="field">Total Deliveries</span>
+        <span class="data"><%= @total_deliveries %></span>
+      </div>
+      <div class="metric">
+        <span class="field">Deliveries you've made</span>
+        <span class="data"><%= @user_deliveries %></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+var two_weeks = <%= @two_weeks_refined %>;
+var plot1 = $.plot($("#two-weeks-deliveries-chart"), [two_weeks], $.extend(lineOptions, {
+  tooltipOpts : {
+    content : "Deliveries on <b>%x</b>: <span class='value'>%y</span>",
+    defaultTheme : false,
+    shifts: {
+      x: -75,
+      y: -70
+    }
+  }
+}));
+
+
+var one_month = <%= @month_refined %>;
+var plot4 = $.plot($("#one-month-deliveries-chart"), [one_month], barOptions);
+</script>

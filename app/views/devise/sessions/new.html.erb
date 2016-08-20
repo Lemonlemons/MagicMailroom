@@ -1,43 +1,45 @@
 <%= content_for :body_id, "signin" %>
-	<%= render "/shared/alerts" %>
-	<div class="bg clear">
 
-		<a href="<%= root_url %>" class="logo">
-			<h1>Magic Mailroom</h1>
-		</a>
+<%= render "/shared/alerts" %>
+<div class="bg clear">
 
-		<h3>Welcome back!</h3>
-
-		<div class="content">
-			<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-				<div class="fields">
-					<strong><%= f.label :email, "Email address" %></strong>
-					<%= f.email_field :email, placeholder: "Your email", autofocus: true, class: "form-control" %>
-				</div>
-				<div class="fields">
-					<strong><%= f.label :password, "Password" %></strong>
-					<%= f.password_field :password, placeholder: "Password", autocomplete: "off", class: "form-control" %>
-				</div>
-				<div class="info">
-          <% if devise_mapping.rememberable? -%>
-            <div class="field">
-              <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
-            </div>
-          <% end -%>
-				</div>
-				<div class="actions">
-					<%= f.submit "Sign in to your account", class: 'btn btn-primary btn-lg' %>
-				</div>
-			<% end %>
-		</div>
-
-		<div class="bottom-wrapper">
-			<div class="message">
-				<span>Don't have an account?</span>
-				<%= link_to "Sign up here", new_registration_path(resource_name) %>.<br>
-        <%= link_to "Forgot your password?", new_password_path(resource_name) %><br>
-        <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>
-      </div>
-		</div>
+	<div class="logo">
+		<h1>Magic Mailroom</h1>
 	</div>
+
+	<h3>Welcome back!</h3>
+
+	<div class="content">
+		<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+			<%= devise_error_messages! %>
+			<div class="fields">
+				<strong><%= f.label :email, "Email address" %></strong>
+				<%= f.email_field :email, placeholder: "Your email", autofocus: true, class: "form-control" %>
+			</div>
+			<div class="fields">
+				<strong><%= f.label :password, "Password" %></strong>
+				<%= f.password_field :password, placeholder: "Password", autocomplete: "off", class: "form-control" %>
+			</div>
+			<div class="info">
+        <% if devise_mapping.rememberable? -%>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end -%>
+			</div>
+			<div class="actions">
+				<%= f.submit "Sign in to your account", class: 'btn btn-primary btn-lg' %>
+			</div>
+		<% end %>
+	</div>
+
+	<div class="bottom-wrapper">
+		<div class="message">
+			<span>Don't have an account?</span>
+			<%= link_to "Sign up here", new_registration_path(resource_name) %>.<br>
+      <%= link_to "Forgot your password?", new_password_path(resource_name) %><br>
+      <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %>
+    </div>
+	</div>
+</div>

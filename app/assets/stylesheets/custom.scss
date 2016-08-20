@@ -15,8 +15,24 @@
   margin: 30px;
 }
 
+.btn {
+  margin-right: 15px;
+}
+
+.btn-primary {
+  background-color: #363e45;
+  border-color: #000;
+  &:hover {
+    background-color: #7a8899;
+  }
+}
+
 .btn-lg {
   margin: 15px;
+}
+
+.btn-new {
+  margin-left: 35px;
 }
 
 .cushion {
@@ -25,4 +41,5 @@
 
 h1 {
   margin-bottom: 30px;
+  color: #363e45;
 }

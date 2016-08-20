@@ -1,25 +1,24 @@
-<p id="notice"><%= notice %></p>
+<%= content_for :body_id, "datatables" %>
 
-<h1>Listing Residents</h1>
+<h1>Residents <%= link_to 'New Resident', new_resident_path, class: "btn btn-primary btn-new" %></h1>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @residents.each do |resident| %>
+<div class="content-wrapper">
+	<table id="orders-datatable">
+    <thead>
       <tr>
-        <td><%= link_to 'Show', resident %></td>
-        <td><%= link_to 'Edit', edit_resident_path(resident) %></td>
-        <td><%= link_to 'Destroy', resident, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th tabindex="0" rowspan="1" colspan="1">Name</th>
+        <th tabindex="0" rowspan="1" colspan="1">Apartment Number</th>
+        <th tabindex="0" rowspan="1" colspan="1">Email</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Resident', new_resident_path %>
+    </thead>
+    <tbody>
+      <% @residents.each do |resident| %>
+        <tr>
+          <td><%= link_to resident.name, edit_resident_path(resident) %></td>
+          <td><%= resident.apartment_number %></td>
+          <td><%= resident.email %></td>
+        </tr>
+      <% end %>
+   	</tbody>
+  </table>
+</div>

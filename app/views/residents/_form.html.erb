@@ -1,4 +1,6 @@
-<%= form_for(@resident) do |f| %>
+<%= content_for :body_id, "form" %>
+
+<%= form_for(@resident, html: {class:"form-horizontal"}) do |f| %>
   <% if @resident.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@resident.errors.count, "error") %> prohibited this resident from being saved:</h2>
@@ -11,7 +13,34 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Resident Name</label>
+    <div class="col-sm-10 col-md-8">
+      <%= f.text_field :name, autofocus: true, class: "form-control" %>
+    </div>
+	</div>
+
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Apartment Number</label>
+    <div class="col-sm-10 col-md-8">
+      <%= f.text_field :apartment_number, autofocus: true, class: "form-control" %>
+    </div>
+	</div>
+
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Email Address</label>
+    <div class="col-sm-10 col-md-8">
+      <%= f.text_field :email, autofocus: true, class: "form-control" %>
+    </div>
+	</div>
+
+  <div class="form-group form-actions">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit "Save Resident", class:"btn btn-primary" %>
+      <% if action_name == "edit" %>
+        <%= link_to 'Delete', @resident, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <% end %>
+      <%= link_to "Back", residents_path, class:"btn btn-default" %>
+    </div>
   </div>
 <% end %>

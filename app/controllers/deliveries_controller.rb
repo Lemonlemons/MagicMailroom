@@ -6,61 +6,102 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
-    @deliveries = Delivery.all
-  end
+    @deliveries = current_user.company.deliveries
 
-  # GET /deliveries/1
-  # GET /deliveries/1.json
-  def show
+    # For resetting the counter cache's on the objects, I doubt I'll ever need it again
+    # Company.find_each { |company| Company.reset_counters(company.id, :users) }
+    # Company.find_each { |company| Company.reset_counters(company.id, :residents) }
+    # User.find_each { |user| User.reset_counters(user.id, :deliveries) }
+    # Resident.find_each { |resident| Resident.reset_counters(resident.id, :deliveries) }
   end
 
   # GET /deliveries/new
   def new
-    @delivery = Delivery.new
   end
 
-  # GET /deliveries/1/edit
-  def edit
+  # GET /deliveries/dashboard
+  def dashboard
+
+    @user = current_user
+
+    # Totals Chart
+    @total_users = @user.company.users_count
+    @total_residents = @user.company.residents_count
+    @total_deliveries = @user.company.deliveries.count
+    @user_deliveries = @user.deliveries_count
+
+    # Last Month Deliveries
+    @month_deliveries = @user.company.deliveries.where('deliveries.created_at >= ?', 1.months.ago)
+    @month_refined = Array.new
+    date_new = Date.current
+    date_old = 1.months.ago.to_date
+    date_new.downto date_old do |date|
+      @temp = Array.new
+      @temp.push(date.strftime('%Q').to_i)
+      @temp.push(@month_deliveries.where(["deliveries.created_at >= ? AND deliveries.created_at <= ?", date.beginning_of_day, date.end_of_day]).count)
+      @month_refined.push(@temp)
+    end
+
+    # Two Weeks Deliveries
+    @two_weeks_deliveries = @month_deliveries.where('deliveries.created_at >= ?', 2.week.ago)
+    @two_weeks_refined = Array.new
+    date_old = 2.week.ago.to_date
+    date_new.downto date_old do |date|
+      @temp = Array.new
+      @temp.push(date.strftime('%Q').to_i)
+      @temp.push(@two_weeks_deliveries.where(["deliveries.created_at >= ? AND deliveries.created_at <= ?", date.beginning_of_day, date.end_of_day]).count)
+      @two_weeks_refined.push(@temp)
+    end
+
+    # Top Notifiers
+    @users = @user.company.users.order("deliveries_count DESC").limit(5)
+
+    # Top Recipients
+    @residents = @user.company.residents.order("deliveries_count DESC").limit(5)
   end
 
   # POST /deliveries
-  # POST /deliveries.json
   def create
-    @delivery = Delivery.new(delivery_params)
-
-    respond_to do |format|
-      if @delivery.save
-        format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
-        format.json { render :show, status: :created, location: @delivery }
+    apartment_numbers = []
+    success = false
+    if params[:apartment_number].include? ","
+      apartment_numbers = params[:apartment_number].split(',')
+    else
+      apartment_numbers.push(params[:apartment_number])
+    end
+    apartment_numbers.each do |number|
+      @resident = Resident.find_by(apartment_number:  number)
+      if @resident == nil
+        redirect_to root_path, notice: "This Apartment number doesn't seem to be in our system..."
       else
-        format.html { render :new }
-        format.json { render json: @delivery.errors, status: :unprocessable_entity }
+        @delivery = Delivery.new()
+        @delivery.resident_id = @resident.id
+        @delivery.user_id = current_user.id
+
+        if @delivery.save
+          success = true
+        else
+          success = false
+        end
       end
+    end
+    if success == true
+      redirect_to root_path, notice: 'Successfully Sent'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /deliveries/1
-  # PATCH/PUT /deliveries/1.json
   def update
-    respond_to do |format|
-      if @delivery.update(delivery_params)
-        format.html { redirect_to @delivery, notice: 'Delivery was successfully updated.' }
-        format.json { render :show, status: :ok, location: @delivery }
-      else
-        format.html { render :edit }
-        format.json { render json: @delivery.errors, status: :unprocessable_entity }
-      end
-    end
+    redirect_to deliveries_path, notice: 'Notification Resent'
   end
 
   # DELETE /deliveries/1
   # DELETE /deliveries/1.json
   def destroy
     @delivery.destroy
-    respond_to do |format|
-      format.html { redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.'
   end
 
   private
@@ -71,14 +112,14 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.fetch(:delivery, {})
+      params.fetch(:delivery, {}).permit(:apartment_number)
     end
 
     def detect_no_company
       if current_user != nil && current_user.company_id == nil
         redirect_to "/users/edit"
       elsif current_user != nil && current_user.company_id != nil
-        @current_company = Company.find(current_user.company_id)
+        @current_company = current_user.company
       end
   	end
 end

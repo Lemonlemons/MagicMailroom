@@ -39,7 +39,7 @@ var ready = function() {
 	};
 };
 
-$(document).on("ready page:load", ready);
+$(document).on("turbolinks:load", ready);
 
 $(document).on("page:change", function () {
 	window.prevPageYOffset = window.pageYOffset;

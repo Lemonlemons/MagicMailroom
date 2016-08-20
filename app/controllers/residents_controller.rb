@@ -4,14 +4,8 @@ class ResidentsController < ApplicationController
   before_action :set_resident, only: [:show, :edit, :update, :destroy]
 
   # GET /residents
-  # GET /residents.json
   def index
-    @residents = Resident.all
-  end
-
-  # GET /residents/1
-  # GET /residents/1.json
-  def show
+    @residents = current_user.company.residents
   end
 
   # GET /residents/new
@@ -24,43 +18,30 @@ class ResidentsController < ApplicationController
   end
 
   # POST /residents
-  # POST /residents.json
   def create
     @resident = Resident.new(resident_params)
+    @resident.company_id = current_user.company_id
 
-    respond_to do |format|
-      if @resident.save
-        format.html { redirect_to @resident, notice: 'Resident was successfully created.' }
-        format.json { render :show, status: :created, location: @resident }
-      else
-        format.html { render :new }
-        format.json { render json: @resident.errors, status: :unprocessable_entity }
-      end
+    if @resident.save
+      redirect_to residents_path, notice: 'Resident was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /residents/1
-  # PATCH/PUT /residents/1.json
   def update
-    respond_to do |format|
-      if @resident.update(resident_params)
-        format.html { redirect_to @resident, notice: 'Resident was successfully updated.' }
-        format.json { render :show, status: :ok, location: @resident }
-      else
-        format.html { render :edit }
-        format.json { render json: @resident.errors, status: :unprocessable_entity }
-      end
+    if @resident.update(resident_params)
+      redirect_to residents_path, notice: 'Resident was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /residents/1
-  # DELETE /residents/1.json
   def destroy
     @resident.destroy
-    respond_to do |format|
-      format.html { redirect_to residents_url, notice: 'Resident was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to residents_url, notice: 'Resident was successfully destroyed.'
   end
 
   private
@@ -71,14 +52,14 @@ class ResidentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def resident_params
-      params.fetch(:resident, {})
+      params.fetch(:resident, {}).permit(:name, :apartment_number, :phone, :email)
     end
 
     def detect_no_company
       if current_user != nil && current_user.company_id == nil
         redirect_to "/users/edit"
       elsif current_user != nil && current_user.company_id != nil
-        @current_company = Company.find(current_user.company_id)
+        @current_company = current_user.company
       end
   	end
 end

@@ -1,25 +1,37 @@
-<h2>Change your password</h2>
+<%= content_for :body_id, "signin" %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+<%= render "/shared/alerts" %>
+<div class="bg clear">
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
-  </div>
+	<div class="logo">
+		<h1>Magic Mailroom</h1>
+	</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+	<h3>Change your password</h3>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+	<div class="content">
+		<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= devise_error_messages! %>
+      <%= f.hidden_field :reset_password_token %>
+			<div class="fields">
+				<strong><%= f.label :password, "New password" %></strong>
+				<%= f.password_field :password, autocomplete: "off" , placeholder: "Your password", autofocus: true, class: "form-control" %>
+			</div>
+      <div class="fields">
+				<strong><%= f.label :password_confirmation, "Confirm New password" %></strong>
+				<%= f.password_field :password_confirmation, autocomplete: "off" , placeholder: "Confirm your password", class: "form-control" %>
+			</div>
+			<div class="actions">
+				<%= f.submit "Change my password", class: 'btn btn-primary btn-lg' %>
+			</div>
+		<% end %>
+	</div>
 
-<%= render "devise/shared/links" %>
+	<div class="bottom-wrapper">
+		<div class="message">
+			<span>Don't have an account?</span>
+			<%= link_to "Sign up here", new_registration_path(resource_name) %>.<br>
+      <%= link_to "Log in", new_session_path(resource_name) %><br>
+    </div>
+	</div>
+</div>

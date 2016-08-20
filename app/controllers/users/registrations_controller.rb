@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_filter :configure_permitted_parameters
+  before_action :get_company
 
   def after_inactive_sign_up_path_for(resource)
     '/users/sign_in'
@@ -25,6 +26,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def detect_no_company
     if current_user != nil && current_user.company_id == nil
       redirect_to "/users/edit"
+    end
+  end
+
+  def get_company
+    if current_user != nil && current_user.company_id != nil
+      @current_company = current_user.company
     end
   end
 end

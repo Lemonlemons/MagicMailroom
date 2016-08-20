@@ -1,15 +1,11 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_user!
   before_action :detect_no_company, except: [:new, :create]
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_company, only: [:edit, :update, :destroy]
 
   # GET /companies
   def index
     @companies = Company.all
-  end
-
-  # GET /companies/1
-  def show
   end
 
   # GET /companies/new
@@ -68,7 +64,7 @@ class CompaniesController < ApplicationController
       if current_user != nil && current_user.company_id == nil
         redirect_to "/users/edit"
       elsif current_user != nil && current_user.company_id != nil
-        @current_company = Company.find(current_user.company_id)
+        @current_company = current_user.company
       end
   	end
 end

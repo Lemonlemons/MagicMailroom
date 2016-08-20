@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160815042522) do
+ActiveRecord::Schema.define(version: 20160820071026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,8 +20,10 @@ ActiveRecord::Schema.define(version: 20160815042522) do
     t.string   "name"
     t.string   "company_code"
     t.datetime "deleted_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "users_count",     default: 0
+    t.integer  "residents_count", default: 0
   end
 
   add_index "companies", ["deleted_at"], name: "index_companies_on_deleted_at", using: :btree
@@ -45,8 +47,9 @@ ActiveRecord::Schema.define(version: 20160815042522) do
     t.integer  "phone"
     t.string   "email"
     t.datetime "deleted_at"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "deliveries_count", default: 0
   end
 
   add_index "residents", ["company_id"], name: "resident_company_id_ix", using: :btree
@@ -74,6 +77,7 @@ ActiveRecord::Schema.define(version: 20160815042522) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "company_code"
+    t.integer  "deliveries_count",       default: 0
   end
 
   add_index "users", ["company_id"], name: "user_company_id_ix", using: :btree

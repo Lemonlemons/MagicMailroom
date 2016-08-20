@@ -1,6 +1,6 @@
 <div id="sidebar-flat-dark" class="main-sidebar fix-scroll">
   <div class="current-user">
-      <a href="" class="name">
+      <a href="#" class="name">
         <%= image_tag "blank-profile-picture.png", class: "avatar" %>
         <span>
           <%= current_user.firstname + " " + current_user.lastname %>
@@ -9,11 +9,13 @@
       </a>
       <ul class="menu">
         <li>
-          <%= link_to "Account settings", edit_user_registration_path %>
+          <%= link_to "Account settings", edit_user_registration_path(current_user.id) %>
         </li>
-        <li>
-          <%= link_to "My Company", edit_user_registration_path %>
-        </li>
+        <% if current_user.company_id != nil %>
+          <li>
+            <a href="<%= edit_company_path(@current_company) %>">Company Settings</a>
+          </li>
+        <% end %>
         <li>
           <%= link_to 'Logout', destroy_user_session_path, :method => :delete %>
         </li>
@@ -48,6 +50,11 @@
           <a href="<%= edit_company_path(@current_company) %>" class="active">
             <i class="ion-home"></i>
             <span><%= @current_company.name %></span>
+          </a>
+        </li>
+        <li class="option">
+          <a class="active">
+            <span><%= @current_company.company_code %></span>
           </a>
         </li>
       </ul>

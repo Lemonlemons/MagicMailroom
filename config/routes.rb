@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :deliveries
+  resources :deliveries do
+    collection do
+      get 'dashboard'
+    end
+  end
   resources :residents
   resources :companies
 
@@ -8,7 +12,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'deliveries#index'
+  root 'deliveries#dashboard'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
