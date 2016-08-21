@@ -19,8 +19,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up).push(:email, :firstname, :lastname, :password, :password_confirmation)
-    devise_parameter_sanitizer.for(:account_update).push(:email, :firstname, :lastname, :password, :password_confirmation, :company_code)
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :firstname, :lastname, :password, :password_confirmation])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:email, :firstname, :lastname, :password, :password_confirmation, :company_code])
   end
 
   def detect_no_company
