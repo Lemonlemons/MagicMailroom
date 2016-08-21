@@ -19,8 +19,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit([:email, :firstname, :lastname, :password, :password_confirmation]) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit([:email, :firstname, :lastname, :password, :password_confirmation, :company_code]) }
+    if Rails.env.production?
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :firstname, :lastname, :password, :password_confirmation])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :firstname, :lastname, :password, :password_confirmation, :company_code])
+    else
+      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit([:email, :firstname, :lastname, :password, :password_confirmation]) }
+      devise_parameter_sanitizer.for(:account_update) { |u| u.permit([:email, :firstname, :lastname, :password, :password_confirmation, :company_code]) }
+    end
   end
 
   def detect_no_company
