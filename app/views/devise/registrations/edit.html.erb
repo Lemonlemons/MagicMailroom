@@ -1,33 +1,9 @@
 <% if current_user.company_id != nil %>
 	<%= content_for :body_id, "account" %>
 
-	<div id="sidebar">
-		<div class="sidebar-toggler visible-xs">
-			<i class="ion-navicon"></i>
-		</div>
-
-		<h3>Your Account</h3>
-		<ul class="menu">
-			<li>
-				<a href="<%= edit_user_registration_path %>" class="active">
-					<i class="ion-ios7-person-outline"></i>
-					Profile
-				</a>
-			</li>
-	    <% if current_user.company_id != nil %>
-	  		<li>
-	  			<a href="<%= edit_company_path(current_user.company_id) %>">
-	  				<i class="ion-card"></i>
-	  				Company
-	  			</a>
-	  		</li>
-	    <% end %>
-		</ul>
-	</div>
-
 	<div id="panel" class="profile">
 		<h3>
-			Profile settings
+			<strong>Profile settings</strong>
 		</h3>
 
 		<p class="intro">

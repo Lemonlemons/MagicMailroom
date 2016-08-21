@@ -3,11 +3,6 @@ class CompaniesController < ApplicationController
   before_action :detect_no_company, except: [:new, :create]
   before_action :set_company, only: [:edit, :update, :destroy]
 
-  # GET /companies
-  def index
-    @companies = Company.all
-  end
-
   # GET /companies/new
   def new
     @company = Company.new
@@ -21,6 +16,9 @@ class CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     @company.company_code = SecureRandom.uuid
+    @company.email_subject_line = @company.name + ' has a delivery waiting for you in the office'
+    @company.email_title = "You have a delivery waiting for you in the office!"
+    @company.email_body = "There is a delivery waiting for you down in the office! Come pick it up anytime during office hours and one of our staff members would be happy to retrieve it for you. Thanks and have a great day!"
 
     if @company.save
       current_user.company_id = @company.id
@@ -37,7 +35,7 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1
   def update
     if @company.update(company_params)
-      redirect_to @company, notice: 'Company was successfully updated.'
+      redirect_to edit_company_path(@company), notice: 'Company was successfully updated.'
     else
       render :edit
     end
@@ -52,12 +50,12 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = Company.find(params[:id])
+      @company = current_user.company.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def company_params
-      params.fetch(:company, {}).permit(:name)
+      params.fetch(:company, {}).permit(:name, :email_subject_line, :email_title, :email_body)
     end
 
   	def detect_no_company

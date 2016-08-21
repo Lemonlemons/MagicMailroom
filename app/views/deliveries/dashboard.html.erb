@@ -30,11 +30,11 @@
           <span>
             <%= u.firstname %>
             <div class="pull-right">
-              <span class="data"><%= u.deliveries_count %></span>  <%= ((u.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%
+              <span class="data"><%= u.deliveries_count %></span>  <%= ((u.deliveries_count.to_f / (@total_deliveries == 0 ? 1 : @total_deliveries)) * 100).to_i %>%
             </div>
           </span>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="<%= u.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((u.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%">
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= u.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((u.deliveries_count.to_f / (@total_deliveries == 0 ? 1 : @total_deliveries)) * 100).to_i %>%">
             </div>
           </div>
         </div>
@@ -49,11 +49,11 @@
           <span>
             <%= r.name %>
             <div class="pull-right">
-              <span class="data"><%= r.deliveries_count %></span>  <%= ((r.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%
+              <span class="data"><%= r.deliveries_count %></span>  <%= ((r.deliveries_count.to_f / (@total_deliveries == 0 ? 1 : @total_deliveries)) * 100).to_i %>%
             </div>
           </span>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="<%= r.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((r.deliveries_count.to_f / @total_deliveries) * 100).to_i %>%">
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= r.deliveries_count %>" aria-valuemin="0" aria-valuemax="<%= @total_deliveries %>" style="width: <%= ((r.deliveries_count.to_f / (@total_deliveries == 0 ? 1 : @total_deliveries)) * 100).to_i %>%">
             </div>
           </div>
         </div>

@@ -64,13 +64,14 @@ class DeliveriesController < ApplicationController
   def create
     apartment_numbers = []
     success = false
+    message = ""
     if params[:apartment_number].include? ","
       apartment_numbers = params[:apartment_number].split(',')
     else
       apartment_numbers.push(params[:apartment_number])
     end
     apartment_numbers.each do |number|
-      @resident = Resident.find_by(apartment_number:  number)
+      @resident = current_user.company.residents.find_by(apartment_number:  number)
       if @resident == nil
         redirect_to root_path, notice: "This Apartment number doesn't seem to be in our system..."
       else
@@ -78,15 +79,22 @@ class DeliveriesController < ApplicationController
         @delivery.resident_id = @resident.id
         @delivery.user_id = current_user.id
 
-        if @delivery.save
-          success = true
+        if NotificationMailer.notification_email(@resident, @current_company).deliver_later
+          if @delivery.save
+            success = true
+            message = 'Successfully Sent'
+          else
+            success = false
+            message = "Email sent but delivery not created"
+          end
         else
           success = false
+          message = "Notification unsuccessfully sent"
         end
       end
     end
     if success == true
-      redirect_to root_path, notice: 'Successfully Sent'
+      redirect_to root_path, notice: message
     else
       render :new
     end
@@ -94,7 +102,11 @@ class DeliveriesController < ApplicationController
 
   # PATCH/PUT /deliveries/1
   def update
-    redirect_to deliveries_path, notice: 'Notification Resent'
+    if NotificationMailer.notification_email(@delivery.resident, @current_company).deliver_later
+      redirect_to deliveries_path, notice: 'Notification Resent'
+    else
+      redirect_to deliveries_path, notice: 'Notification Unsucccessfully Resent'
+    end
   end
 
   # DELETE /deliveries/1
@@ -107,7 +119,7 @@ class DeliveriesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_delivery
-      @delivery = Delivery.find(params[:id])
+      @delivery = current_user.deliveries.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
