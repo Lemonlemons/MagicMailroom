@@ -1,3 +1,55 @@
+#datatables {
+	padding-bottom: 40px;
+
+	.content-wrapper {
+		margin-top: 40px;
+		padding-bottom: 40px;
+
+		thead th {
+			border-top: 1px solid #dee3ea;
+			border-bottom: 1px solid #dee3ea;
+			padding: 10px 18px 15px 15px;
+		}
+
+		td {
+			padding: 11px 15px;
+		}
+
+		.dataTables_length {
+			float: right;
+			margin-bottom: 25px;
+
+			@media (max-width: $maxSmall) {
+				float: none;
+			}
+		}
+
+		.dataTables_filter {
+			float: left;
+			text-align: left;
+
+			@media (max-width: $maxSmall) {
+				float: none;
+				margin-bottom: 25px;
+			}
+		}
+
+		.dataTables_info {
+			display: none;
+		}
+
+		.dataTables_paginate {
+			float: none;
+			text-align: center;
+			margin-top: 70px;
+		}
+
+		#datatable-example {
+		}
+	}
+
+}
+
 #dashboard {
 	.menubar {
 		.period-select {
@@ -89,6 +141,12 @@
 	.chart {
 		margin: 0px 0 70px;
 		background: #fff;
+
+		// Border
+		border: 1px solid #DFE3EB;
+		padding: 25px 25px;
+		border-radius: 5px;
+		box-shadow: inset 0 1px 0 #ededed;
 
 		h3 {
 			font-size: 18px;

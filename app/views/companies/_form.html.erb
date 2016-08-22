@@ -1,4 +1,4 @@
-<%= content_for :body_id, "form" %>
+<%= content_for :body_id, "account" %>
 
 <%= form_for(@company, html: {class:"form-horizontal"}) do |f| %>
   <% if @company.errors.any? %>
@@ -12,10 +12,18 @@
       </ul>
     </div>
   <% end %>
+  <% if action_name == "edit" %>
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Company Code</label>
+      <div class="col-sm-10 col-md-10">
+        <p class="cushion"><%= @company.company_code %></p>
+      </div>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <label class="col-sm-2 col-md-2 control-label">Company Name</label>
-    <div class="col-sm-10 col-md-8">
+    <div class="col-sm-10 col-md-10">
       <%= f.text_field :name, autofocus: true, class: "form-control" %>
     </div>
 	</div>
@@ -23,21 +31,21 @@
   <% if action_name == "edit" %>
     <div class="form-group">
       <label class="col-sm-2 col-md-2 control-label">Email Subject Line</label>
-      <div class="col-sm-10 col-md-8">
+      <div class="col-sm-10 col-md-10">
         <%= f.text_field :email_subject_line, autofocus: true, class: "form-control" %>
       </div>
   	</div>
 
     <div class="form-group">
       <label class="col-sm-2 col-md-2 control-label">Email Title</label>
-      <div class="col-sm-10 col-md-8">
+      <div class="col-sm-10 col-md-10">
         <%= f.text_field :email_title, autofocus: true, class: "form-control" %>
       </div>
   	</div>
 
     <div class="form-group">
       <label class="col-sm-2 col-md-2 control-label">Email Body</label>
-      <div class="col-sm-10 col-md-8">
+      <div class="col-sm-10 col-md-10">
         <%= f.text_area :email_body, autofocus: true, class: "form-control", rows: 6 %>
       </div>
   	</div>

@@ -29,6 +29,7 @@ class DeliveriesController < ApplicationController
     @total_residents = @user.company.residents_count
     @total_deliveries = @user.company.deliveries.count
     @user_deliveries = @user.deliveries_count
+    @all_users = @user.company.users
 
     # Last Month Deliveries
     @month_deliveries = @user.company.deliveries.where('deliveries.created_at >= ?', 1.months.ago)
@@ -54,7 +55,7 @@ class DeliveriesController < ApplicationController
     end
 
     # Top Notifiers
-    @users = @user.company.users.order("deliveries_count DESC").limit(5)
+    @users = @all_users.order("deliveries_count DESC").limit(5)
 
     # Top Recipients
     @residents = @user.company.residents.order("deliveries_count DESC").limit(5)

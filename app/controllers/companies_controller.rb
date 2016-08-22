@@ -50,7 +50,7 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = current_user.company.find(params[:id])
+      @company = current_user.company
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

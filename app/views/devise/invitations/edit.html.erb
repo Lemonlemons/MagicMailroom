@@ -6,11 +6,13 @@
 		<h1>Magic Mailroom</h1>
 	</div>
 
-	<h3>Create Your Account Now</h3>
+	<h3>Create Your Mailroom Account</h3>
 
 	<div class="content">
-		<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+		<%= form_for(resource, as: resource_name, :url => invitation_path(resource_name), :html => { :method => :put }) do |f| %>
       <%= devise_error_messages! %>
+      <%= f.hidden_field :invitation_token %>
+
 			<div class="fields">
 				<strong>Your information</strong>
 				<%= f.text_field :firstname, autofocus: true, class: "form-control", placeholder: "Your first name" %>

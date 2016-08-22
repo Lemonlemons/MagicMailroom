@@ -76,8 +76,15 @@ var barOptions = {
 };
 
 var page_scripts = function () {
-	if (!$("#dashboard").length) return;
+  if (!$("#datatables").length) return;
 
+  var $table = $("#orders-datatable");
+  $table.not('.initialized').addClass('initialized').dataTable({
+      sPaginationType: "full_numbers",
+      iDisplayLength: 3,
+      aLengthMenu: [[3, 5, 10, -1], [3, 5, 10, "All"]],
+      bDestroy: true
+  });
 };
 
 $(document).on("turbolinks:load", page_scripts);

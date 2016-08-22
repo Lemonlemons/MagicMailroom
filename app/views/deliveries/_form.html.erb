@@ -1,4 +1,4 @@
-
+<%= content_for :body_id, "account" %>
 
 <%= form_tag(deliveries_path, method: :post, class:"form-horizontal") do %>
   <% if !@delivery.nil? && @delivery.errors.any? %>

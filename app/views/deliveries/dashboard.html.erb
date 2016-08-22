@@ -1,11 +1,26 @@
-<h1>Your Dashboard</h1>
+<h1>Your Dashboard <%= link_to 'Create New Delivery', new_delivery_path, class: "btn btn-primary btn-new btn-lg" %></h1>
 
 <%= content_for :body_id, "dashboard" %>
 
 <div class="row">
   <div class="col-sm-12 col-md-6">
-    <h3>Notify residents of new deliveries</h3>
-    <%= render 'form' %>
+    <div id="datatables">
+      <h3>All users in your company</h3>
+    	<table id="orders-datatable">
+        <thead>
+          <tr>
+            <th tabindex="0" rowspan="1" colspan="1">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @all_users.each do |user| %>
+            <tr>
+              <td><%= user.firstname %> <%= user.lastname %></td>
+            </tr>
+          <% end %>
+       	</tbody>
+      </table>
+    </div>
   </div>
   <div class="col-sm-12 col-md-6">
     <div class="chart">

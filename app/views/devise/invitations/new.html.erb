@@ -1,0 +1,26 @@
+<%= content_for :body_id, "account" %>
+
+<div id="panel" class="profile">
+  <h3>
+    <strong>Invite a co-worker!</strong>
+  </h3>
+
+  <p class="intro">
+    Your co-worker will receive an email asking them to join your company in Magic Mailroom.
+  </p>
+
+  <%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
+    <%= devise_error_messages! %>
+
+    <% resource.class.invite_key_fields.each do |field| -%>
+      <div class="form-group">
+        <label>Email Address</label>
+        <%= f.email_field field, autofocus: true, class: "form-control" %>
+      </div>
+    <% end -%>
+
+    <div class="form-group action">
+      <%= f.submit t("devise.invitations.new.submit_button"), class:"btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
