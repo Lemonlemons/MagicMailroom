@@ -4,10 +4,6 @@ class Users::InvitationsController < Devise::InvitationsController
 
   protected
 
-  def invite_resource
-    super
-  end
-
   # this is called when accepting invitation
   # should return an instance of resource class
   def accept_resource
