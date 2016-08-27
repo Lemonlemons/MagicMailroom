@@ -1,0 +1,11 @@
+branch-defaults:
+  master:
+    environment: MagicMailroom-env
+    group_suffix: null
+global:
+  application_name: MagicMailroom
+  default_ec2_keyname: aws-eb
+  default_platform: Ruby 2.1 (Puma)
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git
