@@ -2,7 +2,7 @@
     outline: none;
 }
 
-a, 
+a,
 button,
 input[type="submit"] {
 	&:focus {
@@ -286,7 +286,7 @@ textarea {
 	}
 }
 
-/* 
+/*
 	Create a custom select by adding a [data-smart-select]
 	to any select. e.g. <select class="form-control" data-smart-select>
 	and it will automatically be converted into a customized select
@@ -474,7 +474,7 @@ form {
 			opacity: 1;
 			@include transform(scale(1));
 		}
-		
+
 		&:before {
 			content: "";
 			position: absolute;
@@ -483,7 +483,7 @@ form {
 			height: 12px;
 			right: -24px;
 			top: 20px;
-			background-image: url("popover-arrow.png");
+			background-image: image-url("popover-arrow.png");
 			background-size: 100% 100%;
 			@include transform(rotate(90deg));
 		}
@@ -564,11 +564,8 @@ form {
 
 
 /* ==============================================================================
-// jQuery Datepicker 
+// jQuery Datepicker
 // ============================================================================== */
 .datepicker-dropdown {
 	z-index: 9999999 !important;
 }
-
-
-
