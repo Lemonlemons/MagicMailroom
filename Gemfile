@@ -35,8 +35,6 @@ gem 'rails_12factor',  group: :production
 
 gem 'delayed_job_active_record'
 
-# gem "devise-async", :git => 'https://github.com/mhfs/devise-async.git', :branch => 'devise-4.x'
-
 gem 'devise_invitable'
 
 # Use ActiveModel has_secure_password
