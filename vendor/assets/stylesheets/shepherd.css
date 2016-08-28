@@ -43,7 +43,7 @@
       top: -12px;
       left: 49%;
       margin-left: -18.5px;
-      background-image: url("/assets/popover-arrow.png");
+      background-image: url("popover-arrow.png");
       background-size: 100% 100%; }
   .shepherd-element.shepherd-theme-arrows.shepherd-element-attached-bottom.shepherd-element-attached-center .shepherd-content {
     margin-bottom: 16px; }
@@ -51,7 +51,7 @@
       top: 100%;
       left: 50%;
       margin-left: -16px;
-      border-top-color: white;
+      border-top-color: white; 
       transform: rotate(180deg);
       -webkit-transform: rotate(180deg);
       -moz-transform: rotate(180deg); }
