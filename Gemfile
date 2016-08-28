@@ -33,7 +33,7 @@ gem 'paranoia'
 
 gem 'rails_12factor',  group: :production
 
-gem 'active_elastic_job'
+gem 'delayed_job_active_record'
 
 gem 'devise_invitable'
 
