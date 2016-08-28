@@ -49,6 +49,9 @@ Rails.application.configure do
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
 
+  # Add additional assets to the asset load path
+  config.assets.paths << Rails.root.join("vendor", "assets", "fonts")
+
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files.
