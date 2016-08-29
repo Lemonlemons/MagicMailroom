@@ -74,7 +74,8 @@ class DeliveriesController < ApplicationController
     apartment_numbers.each do |number|
       @resident = current_user.company.residents.find_by(apartment_number:  number)
       if @resident == nil
-        redirect_to root_path, notice: "This Apartment number doesn't seem to be in our system..."
+        success = false
+        message = "This Apartment number doesn't seem to be in our system..."
       else
         @delivery = Delivery.new()
         @delivery.resident_id = @resident.id
@@ -97,7 +98,7 @@ class DeliveriesController < ApplicationController
     if success == true
       redirect_to root_path, notice: message
     else
-      render :new
+      redirect_to new_delivery_path, notice: message
     end
   end
 
