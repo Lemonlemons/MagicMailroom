@@ -28,6 +28,10 @@
     </div>
 	</div>
 
+  <br>
+  <h4><strong>Edit your Custom Email Notification</strong></h4>
+  <br>
+
   <% if action_name == "edit" %>
     <div class="form-group">
       <label class="col-sm-2 col-md-2 control-label">Email Subject Line</label>
@@ -53,7 +57,7 @@
 
   <div class="form-group form-actions">
     <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit "Save Company", class:"btn btn-primary" %>
+      <%= f.submit "Save Company and Email Template", class:"btn btn-primary" %>
       <%= link_to "Back", root_path, class:"btn btn-default" %>
     </div>
   </div>

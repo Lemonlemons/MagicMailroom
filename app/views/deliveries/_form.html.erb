@@ -25,6 +25,12 @@
   <% end %>
 
   <div class="form-group">
+    <p><strong><h4>1.</h4></strong> List the apartment numbers of all the residents that received packages in the box below. An email will be sent to each one.</p>
+    <p><strong><h4>2.</h4></strong> Make sure that all the apartment numbers have residents associated with them in your mailroom. Otherwise no notifications will be sent and you will receive an error.</p>
+    <p><strong><h4>3.</h4></strong> To view and add residents to your mailroom <a href="<%= residents_path %>">Click here</a>.<br> To customize your notification email <a href="<%= edit_company_path(current_user.company_id) %>">Click here</a>.</p>
+  </div>
+
+  <div class="form-group">
     <div class="col-sm-2"><label class="control-label">Apartment Numbers</label></div>
     <div class="col-sm-10">
       <%= text_area_tag :apartment_number, "", class: "form-control", placeholder: "Seperate apartment numbers with commas and no spaces", rows: 6 %>
