@@ -78,7 +78,7 @@ var barOptions = {
 var page_scripts = function () {
   if (!$("#datatables").length) return;
 
-  var $table = $("#orders-datatable");
+  var $table = $("#mini-datatable");
   $table.not('.initialized').addClass('initialized').dataTable({
       sPaginationType: "full_numbers",
       iDisplayLength: 3,

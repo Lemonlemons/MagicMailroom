@@ -21,10 +21,6 @@ class Users::InvitationsController < Devise::InvitationsController
   end
 
   def configure_permitted_parameters
-    if Rails.env.production?
-      devise_parameter_sanitizer.permit(:accept_invitation, keys: [:email, :firstname, :lastname, :password, :password_confirmation, :invitation_token])
-    else
-      devise_parameter_sanitizer.for(:accept_invitation) { |u| u.permit([:email, :firstname, :lastname, :password, :password_confirmation, :invitation_token]) }
-    end
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: [:email, :firstname, :lastname, :password, :password_confirmation, :invitation_token])
   end
 end

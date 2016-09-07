@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   acts_as_paranoid
   belongs_to :company, :counter_cache => true
-  has_many :deliveries
+  has_many :deliveries, dependent: :nullify
 
   validates :firstname, :lastname, :email, :encrypted_password, presence: true
   # Include default devise modules. Others available are:

@@ -64,7 +64,7 @@ class DeliveriesController < ApplicationController
   # POST /deliveries
   def create
     apartment_numbers = []
-    success = false
+    success = true
     message = ""
     if params[:apartment_number].include? ","
       apartment_numbers = params[:apartment_number].split(',')
@@ -75,25 +75,35 @@ class DeliveriesController < ApplicationController
       @resident = current_user.company.residents.find_by(apartment_number:  number)
       if @resident == nil
         success = false
-        message = "This Apartment number doesn't seem to be in our system..."
-      else
-        @delivery = Delivery.new()
-        @delivery.resident_id = @resident.id
-        @delivery.user_id = current_user.id
+      end
+    end
+    if success == true
+      apartment_numbers.each do |number|
+        @resident = current_user.company.residents.find_by(apartment_number:  number)
+        if @resident == nil
+          success = false
+          message = "This Apartment number doesn't seem to be in our system..."
+        else
+          @delivery = Delivery.new()
+          @delivery.resident_id = @resident.id
+          @delivery.user_id = current_user.id
 
-        if NotificationMailer.notification_email(@resident, @current_company).deliver_later
-          if @delivery.save
-            success = true
-            message = 'Successfully Sent'
+          if NotificationMailer.notification_email(@resident, @current_company).deliver_later
+            if @delivery.save
+              success = true
+              message = 'Successfully Sent'
+            else
+              success = false
+              message = "Email sent but delivery not created"
+            end
           else
             success = false
-            message = "Email sent but delivery not created"
+            message = "Notification unsuccessfully sent"
           end
-        else
-          success = false
-          message = "Notification unsuccessfully sent"
         end
       end
+    else
+      message = "You apartment number formatting was not correct (remember no spaces!) or you tried to notify a resident that isn't in the system (click on the residents tab to add new residents)."
     end
     if success == true
       redirect_to root_path, notice: message
