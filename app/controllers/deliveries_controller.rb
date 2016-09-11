@@ -66,44 +66,37 @@ class DeliveriesController < ApplicationController
     apartment_numbers = []
     success = true
     message = ""
+    message_count = 0
     if params[:apartment_number].include? ","
       apartment_numbers = params[:apartment_number].split(',')
     else
       apartment_numbers.push(params[:apartment_number])
     end
     apartment_numbers.each do |number|
+      number.strip
       @resident = current_user.company.residents.find_by(apartment_number:  number)
       if @resident == nil
         success = false
+        message = "You apartment number formatting was not correct (remember no spaces!) or you tried to notify a resident that isn't in the system (click on the residents tab to add new residents)."
       end
     end
     if success == true
       apartment_numbers.each do |number|
+        number.strip
         @resident = current_user.company.residents.find_by(apartment_number:  number)
-        if @resident == nil
-          success = false
-          message = "This Apartment number doesn't seem to be in our system..."
-        else
+        if !@resident.opted_out?
           @delivery = Delivery.new()
           @delivery.resident_id = @resident.id
           @delivery.user_id = current_user.id
 
           if NotificationMailer.notification_email(@resident, @current_company).deliver_later
             if @delivery.save
-              success = true
-              message = 'Successfully Sent'
-            else
-              success = false
-              message = "Email sent but delivery not created"
+              message_count += 1
             end
-          else
-            success = false
-            message = "Notification unsuccessfully sent"
           end
         end
       end
-    else
-      message = "You apartment number formatting was not correct (remember no spaces!) or you tried to notify a resident that isn't in the system (click on the residents tab to add new residents)."
+      message = message_count.to_s + " Notifications were successfully sent."
     end
     if success == true
       redirect_to root_path, notice: message

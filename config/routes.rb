@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       get 'dashboard'
     end
   end
-  resources :residents
+  resources :residents do
+    member do
+      get 'reregister'
+    end
+  end
   resources :companies
 
   devise_for :users, controllers: { registrations: "users/registrations", sessions: "users/sessions", :invitations => 'users/invitations' }

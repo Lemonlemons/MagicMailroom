@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160821203618) do
+ActiveRecord::Schema.define(version: 20160910213721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,20 @@ ActiveRecord::Schema.define(version: 20160821203618) do
   add_index "deliveries", ["deleted_at"], name: "index_deliveries_on_deleted_at", using: :btree
   add_index "deliveries", ["resident_id"], name: "delivery_resident_id_ix", using: :btree
   add_index "deliveries", ["user_id"], name: "delivery_user_id_ix", using: :btree
+
+  create_table "mailkick_opt_outs", force: :cascade do |t|
+    t.string   "email"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.boolean  "active",     default: true, null: false
+    t.string   "reason"
+    t.string   "list"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "mailkick_opt_outs", ["email"], name: "index_mailkick_opt_outs_on_email", using: :btree
+  add_index "mailkick_opt_outs", ["user_id", "user_type"], name: "index_mailkick_opt_outs_on_user_id_and_user_type", using: :btree
 
   create_table "residents", force: :cascade do |t|
     t.integer  "company_id"

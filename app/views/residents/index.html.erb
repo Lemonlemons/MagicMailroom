@@ -9,6 +9,7 @@
         <th tabindex="0" rowspan="1" colspan="1">Name</th>
         <th tabindex="0" rowspan="1" colspan="1">Apartment Number</th>
         <th tabindex="0" rowspan="1" colspan="1">Email</th>
+				<th tabindex="0" rowspan="1" colspan="1">Participating</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,13 @@
           <td><%= link_to resident.name, edit_resident_path(resident) %></td>
           <td><%= resident.apartment_number %></td>
           <td><%= resident.email %></td>
+					<td>
+						<% if resident.opted_out? %>
+							<a href="<%= reregister_resident_path(resident.id) %>"><i class="ion-close"></i> No</a>
+						<% else %>
+							<a href="<%= reregister_resident_path(resident.id) %>"><i class="ion-checkmark"></i> Yes</a>
+						<% end %>
+					</td>
         </tr>
       <% end %>
    	</tbody>

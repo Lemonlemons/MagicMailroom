@@ -1,7 +1,7 @@
 class ResidentsController < ApplicationController
   before_action :authenticate_user!
   before_action :detect_no_company
-  before_action :set_resident, only: [:show, :edit, :update, :destroy]
+  before_action :set_resident, only: [:show, :edit, :update, :destroy, :reregister]
 
   # GET /residents
   def index
@@ -17,13 +17,33 @@ class ResidentsController < ApplicationController
   def edit
   end
 
+  def reregister
+    if @resident.opted_out?
+      if @resident.opt_in
+        redirect_to residents_path, notice: 'Resident re-registered for notifications'
+      else
+        redirect_to residents_path, notice: 'Resident re-registered unsucccessful'
+      end
+    else
+      if @resident.opt_out
+        redirect_to residents_path, notice: 'Resident unregistered for notifications'
+      else
+        redirect_to residents_path, notice: 'Resident unregistered unsucccessful'
+      end
+    end
+  end
+
   # POST /residents
   def create
     @resident = Resident.new(resident_params)
     @resident.company_id = current_user.company_id
 
     if @resident.save
-      redirect_to residents_path, notice: 'Resident was successfully created.'
+      if NotificationMailer.welcome_email(@resident, @resident.company).deliver_later
+        redirect_to residents_path, notice: 'Resident was successfully created.'
+      else
+        redirect_to residents_path, notice: 'Resident email not successfully sent'
+      end
     else
       render :new
     end

@@ -1,5 +1,6 @@
 class Resident < ActiveRecord::Base
   acts_as_paranoid
+  mailkick_user
   belongs_to :company, :counter_cache => true
   has_many :deliveries, dependent: :destroy
 
