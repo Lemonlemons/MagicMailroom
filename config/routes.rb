@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     collection do
       get 'dashboard'
     end
+    member do
+      post 'confirm'
+    end
   end
   resources :residents do
     member do

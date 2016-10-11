@@ -1,7 +1,7 @@
 class DeliveriesController < ApplicationController
   before_action :authenticate_user!
   before_action :detect_no_company
-  before_action :set_delivery, only: [:show, :edit, :update, :destroy]
+  before_action :set_delivery, only: [:show, :edit, :update, :destroy, :confirm]
 
   # GET /deliveries
   # GET /deliveries.json
@@ -59,6 +59,21 @@ class DeliveriesController < ApplicationController
 
     # Top Recipients
     @residents = @user.company.residents.order("deliveries_count DESC").limit(5)
+  end
+
+  def confirm
+    if @delivery.confirmed != true
+      @delivery.confirmed = true
+      message_finish = "confirmed"
+    else
+      @delivery.confirmed = false
+      message_finish = "unconfirmed"
+    end
+    if @delivery.save
+      redirect_to deliveries_path, notice: "Delivery successfully " + message_finish
+    else
+      redirect_to deliveries_path, alert: "Delivery unsuccessfully " + message_finish
+    end
   end
 
   # POST /deliveries
@@ -129,7 +144,7 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.fetch(:delivery, {}).permit(:apartment_number)
+      params.fetch(:delivery, {}).permit(:apartment_number, :confirmed)
     end
 
     def detect_no_company

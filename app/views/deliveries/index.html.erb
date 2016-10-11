@@ -7,6 +7,8 @@
     <thead>
       <tr>
         <th tabindex="0" rowspan="1" colspan="1">Recipient</th>
+				<th tabindex="0" rowspan="1" colspan="1">Recipient Room Number</th>
+				<th tabindex="0" rowspan="1" colspan="1">Pickup</th>
         <th tabindex="0" rowspan="1" colspan="1">Notifier</th>
         <th tabindex="0" rowspan="1" colspan="1">Time Last Notified</th>
 				<th tabindex="0" rowspan="1" colspan="1">Resend Notification</td>
@@ -14,8 +16,14 @@
     </thead>
     <tbody>
       <% @deliveries.each do |delivery| %>
-        <tr>
+        <tr class="<%= delivery.confirmed ? 'table-success' : 'table-danger' %>">
           <td><%= delivery.resident.name %></td>
+					<td><%= delivery.resident.apartment_number %></td>
+					<% if delivery.confirmed? %>
+						<td><i class="ion-checkmark"></i> Pickup Confirmed <%= link_to '(Unconfirm)', confirm_delivery_path(delivery), method: :post %></td>
+					<% else %>
+						<td><%= link_to 'Confirm Pickup', confirm_delivery_path(delivery), method: :post %></td>
+					<% end %>
           <td><%= delivery.user.firstname %></td>
           <td><%= delivery.updated_at %></td>
           <td><%= link_to 'Resend', delivery, method: :put %></td>
