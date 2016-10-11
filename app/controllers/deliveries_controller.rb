@@ -62,12 +62,12 @@ class DeliveriesController < ApplicationController
   end
 
   def confirm
-    if @delivery.confirmed != true
-      @delivery.confirmed = true
-      message_finish = "confirmed"
-    else
+    if @delivery.confirmed?
       @delivery.confirmed = false
       message_finish = "unconfirmed"
+    else
+      @delivery.confirmed = true
+      message_finish = "confirmed"
     end
     if @delivery.save
       redirect_to deliveries_path, notice: "Delivery successfully " + message_finish
