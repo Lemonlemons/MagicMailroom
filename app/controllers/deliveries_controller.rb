@@ -62,7 +62,7 @@ class DeliveriesController < ApplicationController
   end
 
   def confirm
-    if @delivery.confirmed?
+    if @delivery.confirmed == true
       @delivery.confirmed = false
       message_finish = "unconfirmed"
     else

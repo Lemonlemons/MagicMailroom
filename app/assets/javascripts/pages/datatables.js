@@ -7,6 +7,7 @@
           sPaginationType: "full_numbers",
           iDisplayLength: 20,
           aLengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+          aaSorting: [[0, "desc"]],
           bDestroy: true
       });
     };

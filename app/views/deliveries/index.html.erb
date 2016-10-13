@@ -6,6 +6,7 @@
 	<table id="orders-datatable">
     <thead>
       <tr>
+				<th tabindex="0" rowspan="1" colspan="1">Created At</th>
         <th tabindex="0" rowspan="1" colspan="1">Recipient</th>
 				<th tabindex="0" rowspan="1" colspan="1">Recipient Room Number</th>
 				<th tabindex="0" rowspan="1" colspan="1">Pickup</th>
@@ -16,7 +17,8 @@
     </thead>
     <tbody>
       <% @deliveries.each do |delivery| %>
-        <tr class="<%= delivery.confirmed ? 'table-success' : 'table-danger' %>">
+        <tr>
+					<td><%= delivery.created_at %></td>
           <td><%= delivery.resident.name %></td>
 					<td><%= delivery.resident.apartment_number %></td>
 					<% if delivery.confirmed? %>
