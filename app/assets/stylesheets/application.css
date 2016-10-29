@@ -19,4 +19,5 @@
  *= require_tree ../../../vendor/assets/stylesheets/.
  *= require theme
  *= require custom
+ *= require pricing
  */

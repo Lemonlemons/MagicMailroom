@@ -1,8 +1,189 @@
 <div id="panel" class="profile">
-  <h1>New Company</h1>
+  <h1>Create a New Company</h1>
 
   <h4>Name your new company after your apartment building.<br><br>
   (You can always change it later)</h4>
 
-  <%= render 'form' %>
+
+  <%= content_for :body_id, "account" %>
+
+  <%= form_for(@company, html: {class:"form-horizontal", id: 'new_company_form_id'}) do |f| %>
+  <% if @company.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+      <ul>
+      <% @company.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% if flash[:error].present? %>
+    <div id="error_explanation">
+      <p><%= flash[:error] %></p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label class="col-sm-2 col-md-2 control-label">Company Name</label>
+    <div class="col-sm-10 col-md-10">
+      <%= f.text_field :name, autofocus: true, class: "form-control", placeholder: "E.G. 'Riverside Apartment Building' or just 'Riverside'." %>
+    </div>
+  </div>
 </div>
+
+  <div class="container" id="pricing-container">
+  		<div class="row">
+  			<div class="offset2 span8">
+            <h2>Select your subscription tier:</h2>
+            <p>You can always upgrade or downgrade your subscription at any time</p>
+  			</div>
+  			<div class="text-center">
+  					<div class="col-md-3 col-sm-6 col-xs-12 float-shadow">
+  								<div class="price_table_container">
+  										<div class="price_table_heading">Small</div>
+  										<div class="price_table_body">
+  												<div class="price_table_row cost dark-bg"><strong>$ 69</strong><span>/MONTH</span></div>
+  												<div class="price_table_row">Maximum 200 Apartments</div>
+  												<div class="price_table_row">Full Dashboard and Analytics</div>
+  												<div class="price_table_row">Unlimited Deliveries</div>
+  												<div class="price_table_row">24/7 Support</div>
+  												<div class="price_table_row">Free Record Backup</div>
+  										</div>
+                      <button id="smallButton" class="btn btn-lg btn-dark btn-block">Select Tier</button>
+  								</div>
+  						</div>
+
+  						<div class="col-md-3 col-sm-6 col-xs-12 float-shadow">
+  								<div class="price_table_container">
+  										<div class="price_table_heading">Basic</div>
+  										<div class="price_table_body">
+  												<div class="price_table_row cost info-bg"><strong>$ 89</strong><span>/MONTH</span></div>
+  												<div class="price_table_row">Maximum 400 Apartments</div>
+  												<div class="price_table_row">Full Dashboard and Analytics</div>
+  												<div class="price_table_row">Unlimited Deliveries</div>
+  												<div class="price_table_row">24/7 Support</div>
+  												<div class="price_table_row">Free Record Backup</div>
+  										</div>
+                      <button id="basicButton" class="btn btn-aqua btn-lg btn-block">Select Tier</button>
+  								</div>
+  						</div>
+
+  						<div class="col-md-3 col-sm-6 col-xs-12 float-shadow">
+  								<div class="recommended"><strong><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> RECOMMENDED</strong></div>
+  								<div class="price_table_container">
+  										<div class="price_table_heading">Premium</div>
+  										<div class="price_table_body">
+  												<div class="price_table_row cost royal-bg"><strong>$ 109</strong><span>/MONTH</span></div>
+  												<div class="price_table_row">Maximum 700 Apartments</div>
+  												<div class="price_table_row">Full Dashboard and Analytics</div>
+  												<div class="price_table_row">Unlimited Deliveries</div>
+  												<div class="price_table_row">24/7 Support</div>
+  												<div class="price_table_row">Free Record Backup</div>
+  										</div>
+                      <button id="premiumButton" class="btn btn-royal btn-lg btn-block">Select Tier</button>
+  								</div>
+  						</div>
+
+  						<div class="col-md-3 col-sm-6 col-xs-12 float-shadow">
+  								<div class="price_table_container">
+  										<div class="price_table_heading">Enterprise</div>
+  										<div class="price_table_body">
+  												<div class="price_table_row cost static-bg"><strong>$ 129</strong><span>/MONTH</span></div>
+  												<div class="price_table_row">Maximum 1000 Apartments</div>
+  												<div class="price_table_row">Full Dashboard and Analytics</div>
+  												<div class="price_table_row">Unlimited Deliveries</div>
+  												<div class="price_table_row">24/7 Support</div>
+  												<div class="price_table_row">Free Record Backup</div>
+  										</div>
+                      <button id="enterpriseButton" class="btn btn-static btn-lg btn-block">Select Tier</button>
+  								</div>
+  						</div>
+              <script>
+                var ready;
+                ready = function() {
+                  var handler1 = StripeCheckout.configure({
+                    key: "<%= Rails.configuration.stripe[:publishable_key] %>",
+                    image: '',
+                    token: function(token) {
+                      var $form = $("#new_company_form_id");
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: token.id })).submit();
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'plan', value: 'Small'})).submit();
+                      $form.submit();
+                    }
+                  });
+                  var handler2 = StripeCheckout.configure({
+                    key: "<%= Rails.configuration.stripe[:publishable_key] %>",
+                    image: '',
+                    token: function(token) {
+                      var $form = $("#new_company_form_id");
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: token.id })).submit();
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'plan', value: 'Basic'})).submit();
+                      $form.submit();
+                    }
+                  });
+                  var handler3 = StripeCheckout.configure({
+                    key: "<%= Rails.configuration.stripe[:publishable_key] %>",
+                    image: '',
+                    token: function(token) {
+                      var $form = $("#new_company_form_id");
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: token.id })).submit();
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'plan', value: 'Premium'})).submit();
+                      $form.submit();
+                    }
+                  });
+                  var handler4 = StripeCheckout.configure({
+                    key: "<%= Rails.configuration.stripe[:publishable_key] %>",
+                    image: '',
+                    token: function(token) {
+                      var $form = $("#new_company_form_id");
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: token.id })).submit();
+                      $form.append($('<input>').attr({ type: 'hidden', name: 'plan', value: 'Enterprise'})).submit();
+                      $form.submit();
+                    }
+                  });
+                  document.getElementById('smallButton').addEventListener('click', function(e) {
+                    handler1.open({
+                      name: 'Magic Mailroom Inc',
+                      description: 'Small Monthly Subscription',
+                      panelLabel: "Subscribe $69/month",
+                      email: "<%= current_user.email %>"
+                    });
+                    e.preventDefault();
+                  });
+                  document.getElementById('basicButton').addEventListener('click', function(e) {
+                    handler2.open({
+                      name: 'Magic Mailroom Inc',
+                      description: 'Basic Monthly Subscription',
+                      panelLabel: "Subscribe $89/month",
+                      email: "<%= current_user.email %>"
+                    });
+                    e.preventDefault();
+                  });
+                  document.getElementById('premiumButton').addEventListener('click', function(e) {
+                    handler3.open({
+                      name: 'Magic Mailroom Inc',
+                      description: 'Premium Monthly Subscription',
+                      panelLabel: "Subscribe $109/month",
+                      email: "<%= current_user.email %>"
+                    });
+                    e.preventDefault();
+                  });
+                  document.getElementById('enterpriseButton').addEventListener('click', function(e) {
+                    handler4.open({
+                      name: 'Magic Mailroom Inc',
+                      description: 'Enterprise Monthly Subscription',
+                      panelLabel: "Subscribe $129/month",
+                      email: "<%= current_user.email %>"
+                    });
+                    e.preventDefault();
+                  });
+                }
+                $(document).ready(ready);
+                $(document).on('page:load', ready);
+              </script>
+  				</div>
+  		</div>
+  </div>
+<% end %>

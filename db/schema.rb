@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161011013128) do
+ActiveRecord::Schema.define(version: 20161026034637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,10 @@ ActiveRecord::Schema.define(version: 20161011013128) do
     t.string   "email_subject_line"
     t.string   "email_title"
     t.string   "email_body"
+    t.string   "stripe_customer_id"
+    t.string   "tier"
+    t.datetime "active_until"
+    t.string   "subscription_id"
   end
 
   add_index "companies", ["deleted_at"], name: "index_companies_on_deleted_at", using: :btree
@@ -90,12 +94,12 @@ ActiveRecord::Schema.define(version: 20161011013128) do
   add_index "residents", ["deleted_at"], name: "index_residents_on_deleted_at", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -108,8 +112,8 @@ ActiveRecord::Schema.define(version: 20161011013128) do
     t.string   "firstname"
     t.string   "lastname"
     t.integer  "company_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "company_code"
     t.integer  "deliveries_count",       default: 0
     t.string   "invitation_token"
@@ -120,6 +124,7 @@ ActiveRecord::Schema.define(version: 20161011013128) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.boolean  "account_admin",          default: false
   end
 
   add_index "users", ["company_id"], name: "user_company_id_ix", using: :btree

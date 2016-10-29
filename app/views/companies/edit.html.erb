@@ -1,5 +1,77 @@
 <div id="panel" class="profile">
   <h1>Edit your Company</h1>
 
-  <%= render 'form' %>
+  <%= content_for :body_id, "account" %>
+
+  <%= form_for(@company, html: {class:"form-horizontal"}) do |f| %>
+    <% if @company.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+        <ul>
+        <% @company.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Company Code</label>
+      <div class="col-sm-10 col-md-10">
+        <p class="cushion"><%= @company.company_code %></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Company Name</label>
+      <div class="col-sm-10 col-md-10">
+        <%= f.text_field :name, autofocus: true, class: "form-control", placeholder: "E.G. 'Riverside Apartment Building' or just 'Riverside'." %>
+      </div>
+  	</div>
+
+    <br>
+    <h4><strong>Edit your Custom Email Notification</strong></h4>
+    <br>
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Email Subject Line</label>
+      <div class="col-sm-10 col-md-10">
+        <%= f.text_field :email_subject_line, autofocus: true, class: "form-control" %>
+      </div>
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Email Title</label>
+      <div class="col-sm-10 col-md-10">
+        <%= f.text_field :email_title, autofocus: true, class: "form-control" %>
+      </div>
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Email Body</label>
+      <div class="col-sm-10 col-md-10">
+        <%= f.text_area :email_body, autofocus: true, class: "form-control", rows: 6 %>
+      </div>
+  	</div>
+
+    <br>
+    <h4><strong>Change your subscription plan</strong></h4>
+    <br>
+    <div class="form-group">
+      <label class="col-sm-2 col-md-2 control-label">Selected tier</label>
+      <div class="col-sm-10 col-md-10">
+        <%= f.select :tier, [['Small, 200 Apartment Max, $ 69/Month','Small'],['Basic, 400 Apartment Max, $ 89/Month','Basic'],['Premium, 800 Apartment Max, $ 109/Month','Premium'],['Enterprise, 1000 Apartment Max, $ 129/Month','Enterprise']],
+          {}, { :class => 'form-control' } %>
+      </div>
+  	</div>
+
+    <div class="form-group form-actions">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit "Save Company and Email Template", class:"btn btn-primary" %>
+        <%= link_to "Back", root_path, class:"btn btn-default" %>
+        <%= link_to 'Delete', @company, method: :delete, data: { confirm: 'Are you sure? This will remove all your saved residents and deliveries' }, class: "btn btn-danger" %>
+      </div>
+    </div>
+
+  <% end %>
 </div>
