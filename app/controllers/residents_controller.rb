@@ -35,6 +35,7 @@ class ResidentsController < ApplicationController
 
   # POST /residents
   def create
+    @resident = Resident.new(resident_params)
     tier = current_user.company.tier
     max_residents = 200
     if tier == "Small"
@@ -46,21 +47,24 @@ class ResidentsController < ApplicationController
     elsif tier == "Enterprise"
       max_residents = 1000
     end
-    if current_user.company.residents_count < max_residents
-      @resident = Resident.new(resident_params)
-      @resident.company_id = current_user.company_id
 
-      if @resident.save
-        if NotificationMailer.welcome_email(@resident, @resident.company).deliver_later
-          redirect_to residents_path, notice: 'Resident was successfully created.'
+    if !Resident.where(apartment_number: @resident.apartment_number, company_id: current_user.company_id).present?
+      if current_user.company.residents_count < max_residents
+        @resident.company_id = current_user.company_id
+        if @resident.save
+          if NotificationMailer.welcome_email(@resident, @resident.company).deliver_later
+            redirect_to residents_path, notice: 'Resident was successfully created.'
+          else
+            redirect_to residents_path, notice: 'Resident email not successfully sent'
+          end
         else
-          redirect_to residents_path, notice: 'Resident email not successfully sent'
+          render :new
         end
       else
-        render :new
+        redirect_to residents_path, notice: 'Your tier only allows a maximum of ' + max_residents.to_s + ' residents'
       end
     else
-      redirect_to residents_path, notice: 'Your tier only allows a maximum of ' + max_residents.to_s + ' residents'
+      redirect_to residents_path, notice: 'This apartment number is already registered, please edit or delete the existing resident'
     end
   end
 
