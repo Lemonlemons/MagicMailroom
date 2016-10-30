@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :authenticate_user!, except: [:webhooks]
+  before_action :authenticate_user!
   before_action :detect_no_company, except: [:new, :create]
   before_action :set_company, only: [:edit, :update, :destroy]
 
