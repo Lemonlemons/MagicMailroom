@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:webhooks]
   before_action :detect_no_company, except: [:new, :create]
   before_action :set_company, only: [:edit, :update, :destroy]
 
@@ -10,28 +10,6 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
-  end
-
-  def webhook
-    begin
-      event_json = JSON.parse(request.body.read)
-      event_object = event_json['data']['object']
-      #refer event types here https://stripe.com/docs/api#event_types
-      case event_json['type']
-        when 'invoice.payment_succeeded'
-          handle_success_invoice event_object
-        when 'invoice.payment_failed'
-          handle_failure_invoice event_object
-        when 'charge.failed'
-          handle_failure_charge event_object
-        when 'customer.subscription.deleted'
-        when 'customer.subscription.updated'
-      end
-    rescue Exception => ex
-      render :json => {:status => 422, :error => "Webhook call failed"}
-      return
-    end
-    render :json => {:status => 200}
   end
 
   # POST /companies
@@ -49,8 +27,7 @@ class CompaniesController < ApplicationController
     elsif tier == "Enterprise"
       plan = "004"
     end
-
-    if @company.name != nil
+    if @company.name != ""
       customer = Stripe::Customer.create(
         :description => @company.name,
         :email => current_user.email,
@@ -58,12 +35,12 @@ class CompaniesController < ApplicationController
       )
 
       stripe_subscription = customer.subscriptions.create(:plan => plan)
+      @company.stripe_customer_id = customer.id
+      @company.subscription_id = stripe_subscription.id
     end
 
     @company.tier = tier
-    @company.stripe_customer_id = customer.id
     @company.active_until = Time.now + 1.month
-    @company.subscription_id = stripe_subscription.id
     @company.company_code = SecureRandom.uuid
 
     if @company.save
